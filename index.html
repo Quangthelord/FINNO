@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finno App - Tài chính Cá nhân AI</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="phone-container">
+      <div class="phone-screen">
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <div class="time">9:41</div>
+          <div class="status-icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+          <div class="header-content">
+            <h1>Finno</h1>
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+          <div class="tab active" data-tab="dashboard">
+            <i class="fas fa-home"></i>
+            <span>Tổng quan</span>
+          </div>
+          <div class="tab" data-tab="transactions">
+            <i class="fas fa-list"></i>
+            <span>Giao dịch</span>
+          </div>
+          <div class="tab" data-tab="insights">
+            <i class="fas fa-chart-line"></i>
+            <span>Phân tích</span>
+          </div>
+          <div class="tab" data-tab="recommendations">
+            <i class="fas fa-lightbulb"></i>
+            <span>Khuyến nghị</span>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <!-- Dashboard Tab -->
+          <div class="tab-content active" id="dashboard">
+            <div class="card health-score-card">
+              <div class="card-header">
+                <h3>Sức khỏe Tài chính</h3>
+                <div class="score-circle">
+                  <div class="score-value" id="healthScore">75</div>
+                  <div class="score-label">/100</div>
+                </div>
+              </div>
+              <div class="score-explanation">
+                <p>Điểm số của bạn đang ở mức tốt. Hãy tiếp tục duy trì!</p>
+              </div>
+            </div>
+
+            <div class="card balance-card">
+              <div class="balance-info">
+                <h3>Số dư hiện tại</h3>
+                <div class="balance-amount" id="currentBalance">
+                  15,250,000 VND
+                </div>
+              </div>
+              <div class="balance-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+2.5% so với tháng trước</span>
+              </div>
+            </div>
+
+            <div class="card quick-stats">
+              <h3>Thống kê nhanh</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value" id="monthlyIncome">12,500,000</div>
+                  <div class="stat-label">Thu nhập tháng</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="monthlyExpenses">8,750,000</div>
+                  <div class="stat-label">Chi tiêu tháng</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="savingsRate">30%</div>
+                  <div class="stat-label">Tỷ lệ tiết kiệm</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card recent-transactions">
+              <h3>Giao dịch gần đây</h3>
+              <div class="transaction-list" id="recentTransactions">
+                <!-- Transactions will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions Tab -->
+          <div class="tab-content" id="transactions">
+            <div class="search-bar">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                placeholder="Tìm kiếm giao dịch..."
+                id="transactionSearch"
+              />
+            </div>
+
+            <div class="filter-buttons">
+              <button class="filter-btn active" data-filter="all">
+                Tất cả
+              </button>
+              <button class="filter-btn" data-filter="income">Thu nhập</button>
+              <button class="filter-btn" data-filter="expense">Chi tiêu</button>
+              <button class="filter-btn" data-filter="transfer">
+                Chuyển khoản
+              </button>
+            </div>
+
+            <div class="transaction-list" id="allTransactions">
+              <!-- All transactions will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Insights Tab -->
+          <div class="tab-content" id="insights">
+            <div class="card forecast-card">
+              <h3>Dự báo chi tiêu</h3>
+              <div class="forecast-chart">
+                <canvas id="forecastChart" width="300" height="200"></canvas>
+              </div>
+              <div class="forecast-summary">
+                <p>
+                  Dự kiến chi tiêu 4 tuần tới:
+                  <strong id="forecastAmount">9,200,000 VND</strong>
+                </p>
+              </div>
+            </div>
+
+            <div class="card category-breakdown">
+              <h3>Phân tích theo danh mục</h3>
+              <div class="category-chart">
+                <canvas id="categoryChart" width="300" height="200"></canvas>
+              </div>
+            </div>
+
+            <div class="card simulation-card">
+              <h3>Mô phỏng can thiệp</h3>
+              <div class="simulation-controls">
+                <label>Giảm chi tiêu:</label>
+                <select id="simulationCategory">
+                  <option value="food">Ăn uống</option>
+                  <option value="transport">Giao thông</option>
+                  <option value="shopping">Mua sắm</option>
+                  <option value="entertainment">Giải trí</option>
+                </select>
+                <input
+                  type="range"
+                  id="reductionSlider"
+                  min="5"
+                  max="30"
+                  value="15"
+                />
+                <span id="reductionValue">15%</span>
+              </div>
+              <button class="simulate-btn" onclick="runSimulation()">
+                Chạy mô phỏng
+              </button>
+              <div class="simulation-result" id="simulationResult"></div>
+            </div>
+          </div>
+
+          <!-- Recommendations Tab -->
+          <div class="tab-content" id="recommendations">
+            <div class="card recommendations-card">
+              <h3>Khuyến nghị cá nhân hóa</h3>
+              <div class="recommendations-list" id="recommendationsList">
+                <!-- Recommendations will be populated by JavaScript -->
+              </div>
+            </div>
+
+            <div class="card goals-card">
+              <h3>Mục tiêu tài chính</h3>
+              <div class="goals-list">
+                <div class="goal-item">
+                  <div class="goal-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                  </div>
+                  <div class="goal-info">
+                    <h4>Tiết kiệm khẩn cấp</h4>
+                    <div class="goal-progress">
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                      </div>
+                      <span>6,000,000 / 10,000,000 VND</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="goal-item">
+                  <div class="goal-icon">
+                    <i class="fas fa-home"></i>
+                  </div>
+                  <div class="goal-info">
+                    <h4>Mua nhà</h4>
+                    <div class="goal-progress">
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: 15%"></div>
+                      </div>
+                      <span>150,000,000 / 1,000,000,000 VND</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fab" onclick="showAddTransaction()">
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal" id="addTransactionModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Thêm giao dịch</h3>
+          <button class="close-btn" onclick="hideAddTransaction()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Mô tả giao dịch</label>
+            <div class="input-with-voice">
+              <input
+                type="text"
+                id="transactionDescription"
+                placeholder="Ví dụ: Chuyển tiền cho Nguyễn Văn A - 500000 VND"
+              />
+              <button
+                class="voice-input-btn"
+                onclick="startVoiceInput()"
+                title="Nhập bằng giọng nói"
+              >
+                <i class="fas fa-microphone"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Số tiền</label>
+            <input type="number" id="transactionAmount" placeholder="500000" />
+          </div>
+          <div class="form-group">
+            <label>Danh mục</label>
+            <select id="transactionCategory">
+              <option value="income">Thu nhập</option>
+              <option value="food">Ăn uống</option>
+              <option value="transport">Giao thông</option>
+              <option value="shopping">Mua sắm</option>
+              <option value="bills">Hóa đơn</option>
+              <option value="health">Sức khỏe</option>
+              <option value="education">Giáo dục</option>
+              <option value="entertainment">Giải trí</option>
+              <option value="transfer">Chuyển khoản</option>
+            </select>
+          </div>
+          <button class="add-btn" onclick="addTransaction()">
+            Thêm giao dịch
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

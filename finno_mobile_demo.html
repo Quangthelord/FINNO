@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finno App - Tài chính Cá nhân AI</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* Phone Container */
+      .phone-container {
+        width: 375px;
+        height: 812px;
+        background: #000;
+        border-radius: 40px;
+        padding: 8px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        position: relative;
+      }
+
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        background: #f8f9fa;
+        border-radius: 32px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Status Bar */
+      .status-bar {
+        height: 44px;
+        background: #000;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .status-icons {
+        display: flex;
+        gap: 5px;
+      }
+
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        padding-top: 60px;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      /* Navigation Tabs */
+      .nav-tabs {
+        display: flex;
+        background: white;
+        border-bottom: 1px solid #e9ecef;
+        padding: 0 20px;
+      }
+
+      .tab {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: #6c757d;
+      }
+
+      .tab.active {
+        color: #667eea;
+        border-bottom: 2px solid #667eea;
+      }
+
+      .tab i {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      .tab span {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        padding-bottom: 100px;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Cards */
+      .card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      /* Health Score Card */
+      .health-score-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .score-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .score-value {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .score-label {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .score-explanation {
+        margin-top: 15px;
+      }
+
+      .score-explanation p {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      /* Balance Card */
+      .balance-card {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+      }
+
+      .balance-amount {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 10px 0;
+      }
+
+      .balance-change {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .balance-change.positive {
+        color: #d4edda;
+      }
+
+      /* Quick Stats */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #6c757d;
+      }
+
+      /* Transaction List */
+      .transaction-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .transaction-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #f1f3f4;
+      }
+
+      .transaction-item:last-child {
+        border-bottom: none;
+      }
+
+      .transaction-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 16px;
+        color: white;
+      }
+
+      .transaction-icon.income {
+        background: #28a745;
+      }
+
+      .transaction-icon.expense {
+        background: #dc3545;
+      }
+
+      .transaction-icon.transfer {
+        background: #17a2b8;
+      }
+
+      .transaction-info {
+        flex: 1;
+      }
+
+      .transaction-description {
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 4px;
+      }
+
+      .transaction-category {
+        font-size: 12px;
+        color: #6c757d;
+      }
+
+      .transaction-amount {
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .transaction-amount.positive {
+        color: #28a745;
+      }
+
+      .transaction-amount.negative {
+        color: #dc3545;
+      }
+
+      /* Floating Action Button */
+      .fab {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        transition: transform 0.3s ease;
+      }
+
+      .fab:hover {
+        transform: scale(1.1);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 480px) {
+        .phone-container {
+          width: 100%;
+          height: 100vh;
+          border-radius: 0;
+          padding: 0;
+        }
+
+        .phone-screen {
+          border-radius: 0;
+        }
+
+        body {
+          padding: 0;
+        }
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .tab-content.active {
+        animation: fadeIn 0.3s ease;
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 2px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone-container">
+      <div class="phone-screen">
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <div class="time">9:41</div>
+          <div class="status-icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+          <div class="header-content">
+            <h1>Finno</h1>
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+          <div class="tab active" data-tab="dashboard">
+            <i class="fas fa-home"></i>
+            <span>Tổng quan</span>
+          </div>
+          <div class="tab" data-tab="transactions">
+            <i class="fas fa-list"></i>
+            <span>Giao dịch</span>
+          </div>
+          <div class="tab" data-tab="insights">
+            <i class="fas fa-chart-line"></i>
+            <span>Phân tích</span>
+          </div>
+          <div class="tab" data-tab="recommendations">
+            <i class="fas fa-lightbulb"></i>
+            <span>Khuyến nghị</span>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <!-- Dashboard Tab -->
+          <div class="tab-content active" id="dashboard">
+            <div class="card health-score-card">
+              <div class="card-header">
+                <h3>Sức khỏe Tài chính</h3>
+                <div class="score-circle">
+                  <div class="score-value">75</div>
+                  <div class="score-label">/100</div>
+                </div>
+              </div>
+              <div class="score-explanation">
+                <p>Điểm số của bạn đang ở mức tốt. Hãy tiếp tục duy trì!</p>
+              </div>
+            </div>
+
+            <div class="card balance-card">
+              <div class="balance-info">
+                <h3>Số dư hiện tại</h3>
+                <div class="balance-amount">15,250,000 VND</div>
+              </div>
+              <div class="balance-change positive">
+                <i class="fas fa-arrow-up"></i>
+                <span>+2.5% so với tháng trước</span>
+              </div>
+            </div>
+
+            <div class="card quick-stats">
+              <h3>Thống kê nhanh</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">12,500,000</div>
+                  <div class="stat-label">Thu nhập tháng</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">8,750,000</div>
+                  <div class="stat-label">Chi tiêu tháng</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">30%</div>
+                  <div class="stat-label">Tỷ lệ tiết kiệm</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card recent-transactions">
+              <h3>Giao dịch gần đây</h3>
+              <div class="transaction-list">
+                <div class="transaction-item">
+                  <div class="transaction-icon transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Chuyển tiền cho Nguyễn Văn A
+                    </div>
+                    <div class="transaction-category">Chuyển khoản</div>
+                  </div>
+                  <div class="transaction-amount negative">-500,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon income">
+                    <i class="fas fa-arrow-down"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Nhận lương tháng 1/2024
+                    </div>
+                    <div class="transaction-category">Thu nhập</div>
+                  </div>
+                  <div class="transaction-amount positive">+15,000,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-file-invoice"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Thanh toán hóa đơn điện
+                    </div>
+                    <div class="transaction-category">Hóa đơn</div>
+                  </div>
+                  <div class="transaction-amount negative">-150,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-shopping-bag"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">Mua sắm tại BigC</div>
+                    <div class="transaction-category">Mua sắm</div>
+                  </div>
+                  <div class="transaction-amount negative">-200,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-utensils"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Ăn trưa tại nhà hàng
+                    </div>
+                    <div class="transaction-category">Ăn uống</div>
+                  </div>
+                  <div class="transaction-amount negative">-80,000 VND</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions Tab -->
+          <div class="tab-content" id="transactions">
+            <div class="card">
+              <h3>Tất cả giao dịch</h3>
+              <div class="transaction-list">
+                <div class="transaction-item">
+                  <div class="transaction-icon transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Chuyển tiền cho Nguyễn Văn A
+                    </div>
+                    <div class="transaction-category">Chuyển khoản</div>
+                  </div>
+                  <div class="transaction-amount negative">-500,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon income">
+                    <i class="fas fa-arrow-down"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Nhận lương tháng 1/2024
+                    </div>
+                    <div class="transaction-category">Thu nhập</div>
+                  </div>
+                  <div class="transaction-amount positive">+15,000,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-file-invoice"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Thanh toán hóa đơn điện
+                    </div>
+                    <div class="transaction-category">Hóa đơn</div>
+                  </div>
+                  <div class="transaction-amount negative">-150,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-shopping-bag"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">Mua sắm tại BigC</div>
+                    <div class="transaction-category">Mua sắm</div>
+                  </div>
+                  <div class="transaction-amount negative">-200,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-utensils"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Ăn trưa tại nhà hàng
+                    </div>
+                    <div class="transaction-category">Ăn uống</div>
+                  </div>
+                  <div class="transaction-amount negative">-80,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-car"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">Mua xăng xe máy</div>
+                    <div class="transaction-category">Giao thông</div>
+                  </div>
+                  <div class="transaction-amount negative">-50,000 VND</div>
+                </div>
+                <div class="transaction-item">
+                  <div class="transaction-icon expense">
+                    <i class="fas fa-graduation-cap"></i>
+                  </div>
+                  <div class="transaction-info">
+                    <div class="transaction-description">
+                      Thanh toán học phí con
+                    </div>
+                    <div class="transaction-category">Giáo dục</div>
+                  </div>
+                  <div class="transaction-amount negative">-3,000,000 VND</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Insights Tab -->
+          <div class="tab-content" id="insights">
+            <div class="card">
+              <h3>Dự báo chi tiêu</h3>
+              <div
+                style="
+                  height: 200px;
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  border-radius: 12px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  margin: 20px 0;
+                "
+              >
+                <div style="text-align: center">
+                  <i
+                    class="fas fa-chart-line"
+                    style="font-size: 48px; margin-bottom: 10px"
+                  ></i>
+                  <div style="font-size: 18px; font-weight: 600">
+                    Dự kiến chi tiêu 4 tuần tới
+                  </div>
+                  <div
+                    style="font-size: 24px; font-weight: 700; margin-top: 10px"
+                  >
+                    9,200,000 VND
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Phân tích theo danh mục</h3>
+              <div
+                style="
+                  height: 200px;
+                  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                  border-radius: 12px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  margin: 20px 0;
+                "
+              >
+                <div style="text-align: center">
+                  <i
+                    class="fas fa-chart-pie"
+                    style="font-size: 48px; margin-bottom: 10px"
+                  ></i>
+                  <div style="font-size: 18px; font-weight: 600">
+                    Phân tích chi tiêu
+                  </div>
+                  <div style="font-size: 16px; margin-top: 10px">
+                    Ăn uống: 30% | Giao thông: 20%<br />Mua sắm: 25% | Khác: 25%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Mô phỏng can thiệp</h3>
+              <div
+                style="
+                  background: #f8f9fa;
+                  padding: 15px;
+                  border-radius: 8px;
+                  margin-top: 15px;
+                "
+              >
+                <p><strong>Giảm 15% chi tiêu ăn uống</strong></p>
+                <p>Tiết kiệm thêm: <strong>120,000 VND/tháng</strong></p>
+                <p>Tỷ lệ tiết kiệm tăng: <strong>1.0%</strong></p>
+                <p>Độ tin cậy: <strong>85%</strong></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommendations Tab -->
+          <div class="tab-content" id="recommendations">
+            <div class="card">
+              <h3>Khuyến nghị cá nhân hóa</h3>
+              <div style="margin-top: 15px">
+                <div style="padding: 15px 0; border-bottom: 1px solid #f1f3f4">
+                  <div
+                    style="font-weight: 600; color: #2c3e50; margin-bottom: 8px"
+                  >
+                    Giảm chi tiêu ăn uống xuống 15%
+                  </div>
+                  <div
+                    style="
+                      font-size: 14px;
+                      color: #28a745;
+                      font-weight: 500;
+                      margin-bottom: 5px;
+                    "
+                  >
+                    Tác động: +120,000 VND/tháng
+                  </div>
+                  <div
+                    style="font-size: 13px; color: #6c757d; margin-bottom: 8px"
+                  >
+                    Dựa trên phân tích chi tiêu của bạn
+                  </div>
+                  <div
+                    style="font-size: 12px; color: #667eea; font-weight: 500"
+                  >
+                    Độ tin cậy: 80%
+                  </div>
+                </div>
+                <div style="padding: 15px 0; border-bottom: 1px solid #f1f3f4">
+                  <div
+                    style="font-weight: 600; color: #2c3e50; margin-bottom: 8px"
+                  >
+                    Lập ngân sách chi tiêu hàng tháng
+                  </div>
+                  <div
+                    style="
+                      font-size: 14px;
+                      color: #28a745;
+                      font-weight: 500;
+                      margin-bottom: 5px;
+                    "
+                  >
+                    Tác động: -10% tổng chi tiêu
+                  </div>
+                  <div
+                    style="font-size: 13px; color: #6c757d; margin-bottom: 8px"
+                  >
+                    Dựa trên pattern chi tiêu hiện tại
+                  </div>
+                  <div
+                    style="font-size: 12px; color: #667eea; font-weight: 500"
+                  >
+                    Độ tin cậy: 70%
+                  </div>
+                </div>
+                <div style="padding: 15px 0; border-bottom: 1px solid #f1f3f4">
+                  <div
+                    style="font-weight: 600; color: #2c3e50; margin-bottom: 8px"
+                  >
+                    Đầu tư vào quỹ tương hỗ
+                  </div>
+                  <div
+                    style="
+                      font-size: 14px;
+                      color: #28a745;
+                      font-weight: 500;
+                      margin-bottom: 5px;
+                    "
+                  >
+                    Tác động: +8% lợi nhuận dài hạn
+                  </div>
+                  <div
+                    style="font-size: 13px; color: #6c757d; margin-bottom: 8px"
+                  >
+                    Người dùng có điểm số tương tự đã thành công
+                  </div>
+                  <div
+                    style="font-size: 12px; color: #667eea; font-weight: 500"
+                  >
+                    Độ tin cậy: 75%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Mục tiêu tài chính</h3>
+              <div style="margin-top: 15px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    padding: 15px 0;
+                    border-bottom: 1px solid #f1f3f4;
+                  "
+                >
+                  <div
+                    style="
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;
+                      background: linear-gradient(
+                        135deg,
+                        #667eea 0%,
+                        #764ba2 100%
+                      );
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin-right: 15px;
+                      color: white;
+                      font-size: 20px;
+                    "
+                  >
+                    <i class="fas fa-piggy-bank"></i>
+                  </div>
+                  <div style="flex: 1">
+                    <h4
+                      style="
+                        font-weight: 600;
+                        color: #2c3e50;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      Tiết kiệm khẩn cấp
+                    </h4>
+                    <div
+                      style="
+                        width: 100%;
+                        height: 8px;
+                        background: #e9ecef;
+                        border-radius: 4px;
+                        overflow: hidden;
+                        margin-bottom: 5px;
+                      "
+                    >
+                      <div
+                        style="
+                          width: 60%;
+                          height: 100%;
+                          background: linear-gradient(
+                            135deg,
+                            #667eea 0%,
+                            #764ba2 100%
+                          );
+                        "
+                      ></div>
+                    </div>
+                    <span style="font-size: 12px; color: #6c757d"
+                      >6,000,000 / 10,000,000 VND</span
+                    >
+                  </div>
+                </div>
+                <div
+                  style="display: flex; align-items: center; padding: 15px 0"
+                >
+                  <div
+                    style="
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;
+                      background: linear-gradient(
+                        135deg,
+                        #667eea 0%,
+                        #764ba2 100%
+                      );
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin-right: 15px;
+                      color: white;
+                      font-size: 20px;
+                    "
+                  >
+                    <i class="fas fa-home"></i>
+                  </div>
+                  <div style="flex: 1">
+                    <h4
+                      style="
+                        font-weight: 600;
+                        color: #2c3e50;
+                        margin-bottom: 8px;
+                      "
+                    >
+                      Mua nhà
+                    </h4>
+                    <div
+                      style="
+                        width: 100%;
+                        height: 8px;
+                        background: #e9ecef;
+                        border-radius: 4px;
+                        overflow: hidden;
+                        margin-bottom: 5px;
+                      "
+                    >
+                      <div
+                        style="
+                          width: 15%;
+                          height: 100%;
+                          background: linear-gradient(
+                            135deg,
+                            #667eea 0%,
+                            #764ba2 100%
+                          );
+                        "
+                      ></div>
+                    </div>
+                    <span style="font-size: 12px; color: #6c757d"
+                      >150,000,000 / 1,000,000,000 VND</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div
+          class="fab"
+          onclick="alert('Tính năng thêm giao dịch sẽ được tích hợp với AI backend!')"
+        >
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab navigation
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", function () {
+          const tabId = this.dataset.tab;
+
+          // Hide all tab contents
+          document.querySelectorAll(".tab-content").forEach((content) => {
+            content.classList.remove("active");
+          });
+
+          // Show selected tab content
+          document.getElementById(tabId).classList.add("active");
+
+          // Update tab active state
+          document.querySelectorAll(".tab").forEach((t) => {
+            t.classList.remove("active");
+          });
+          this.classList.add("active");
+        });
+      });
+
+      // Add some interactivity
+      document.querySelectorAll(".transaction-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          this.style.backgroundColor = "#f8f9fa";
+          setTimeout(() => {
+            this.style.backgroundColor = "transparent";
+          }, 200);
+        });
+      });
+
+      // Add hover effects
+      document.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-2px)";
+          this.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.15)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+          this.style.transform = "translateY(0)";
+          this.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+        });
+      });
+
+      // Simulate loading
+      window.addEventListener("load", function () {
+        setTimeout(() => {
+          document.querySelector(".phone-container").style.opacity = "1";
+          document.querySelector(".phone-container").style.transform =
+            "scale(1)";
+        }, 100);
+      });
+
+      // Initial styles
+      document.querySelector(".phone-container").style.opacity = "0";
+      document.querySelector(".phone-container").style.transform = "scale(0.9)";
+      document.querySelector(".phone-container").style.transition =
+        "all 0.5s ease";
+    </script>
+  </body>
+</html>
+
